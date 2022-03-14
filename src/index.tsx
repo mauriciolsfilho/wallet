@@ -15,7 +15,7 @@ createServer({
           title: "Desenvolvimento de Website",
           type: "deposit",
           category: "Dev",
-          amount: 1000,
+          amount: 6754,
           createdAt: new Date("2022-02-10"),
         },
         {
@@ -23,7 +23,7 @@ createServer({
           title: "Aluguel Joinville",
           type: "withdraw",
           category: "Casa",
-          amount: 1000,
+          amount: -10000,
           createdAt: new Date("2022-03-10"),
         },
       ],

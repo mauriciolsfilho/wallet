@@ -1,9 +1,10 @@
+import { currencyMask } from "../../utils/masks";
 import { CardWrapper, CardHeader, CardBody } from "./styles";
 
 interface CardProps {
   image: string;
   title: string;
-  value: number;
+  amount: number;
   className?: string;
 }
 
@@ -11,18 +12,18 @@ interface CardProps {
  * Componente {@link Card}
  * @param image
  * @param title
- * @param value
+ * @param amount
  * @param className
  * @returns
  */
-export function Card({ image, title, value, className = "" }: CardProps) {
+export function Card({ image, title, amount, className = "" }: CardProps) {
   return (
     <CardWrapper className={className}>
       <CardHeader>
         <p>{title}</p>
         <img src={image} alt={title} />
       </CardHeader>
-      <CardBody>R$ {value.toFixed(2)}</CardBody>
+      <CardBody>{currencyMask(amount)}</CardBody>
     </CardWrapper>
   );
 }

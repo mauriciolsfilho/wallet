@@ -3,8 +3,8 @@ import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import Modal, { Props } from "react-modal";
 import { FormWrapper, TransactionTypeContainer, RadioTypeBox } from "./styles";
-import { FormEvent, useState } from "react";
-import { api } from "../../services/api";
+import { FormEvent, useContext, useState } from "react";
+import { TransactionsContext } from "../../contexts/TransactionsContext";
 
 interface ModalProps extends Props {
   onRequestClose: () => void;
@@ -19,28 +19,23 @@ export function NewTransactionModal({
   onRequestClose,
   ...props
 }: ModalProps) {
+  const { createTransaction } = useContext(TransactionsContext);
+
   const [type, setType] = useState<"deposit" | "withdraw">("deposit");
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState("");
 
-  function handleCreateNewTransaction(e: FormEvent) {
+  async function handleCreateNewTransaction(e: FormEvent) {
     e.preventDefault();
-    api
-      .post("/transactions", {
-        title,
-        amount,
-        category,
-        type,
-        createdAt: new Date(),
-      })
-      .then((response) => {
-        if (response.status <= 201) {
-          alert("Transação cadastrada com sucesso");
-          cleanCloseForm();
-        }
-      })
-      .catch((err) => console.error("[Create Error]: " + err));
+
+    await createTransaction({
+      type,
+      title,
+      amount,
+      category,
+    });
+    cleanCloseForm();
   }
 
   function cleanCloseForm() {

@@ -10,12 +10,23 @@ export const CardWrapper = styled.div`
     color: #fff;
     background: var(--green);
   }
+
+  &.background-red {
+    color: #fff;
+    background: var(--red);
+  }
 `;
 
 export const CardHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  img {
+    padding: .25rem;
+    border-radius: 50%;
+    border: 1px solid #fefefe;
+  }
 `;
 
 export const CardBody = styled.div`
