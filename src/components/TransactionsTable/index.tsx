@@ -1,15 +1,14 @@
-import { useContext } from "react";
-import { Transaction } from "../../models/transactions";
+import { Transaction } from "../../core/models/transactions";
 import { Container } from "./styles";
-import { TransactionsContext } from "../../contexts/TransactionsContext";
-import { currencyMask, localeDateFormat } from "../../utils/masks";
+import { currencyMask, localeDateFormat } from "../../core/utils/masks";
+import { useTransaction } from "../../core/hooks/useTransactions";
 
 /**
  * Componente {@link TransactionsTable}
  * @returns
  */
 export function TransactionsTable() {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useTransaction();
 
   return (
     <Container>

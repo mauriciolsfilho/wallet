@@ -1,21 +1,12 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useState, useContext } from "react";
+import { api } from "../../services/api";
+import { TransactionsContext } from "../contexts/TransactionsContext";
+import { TransactionInput } from "../models/transactionInput";
 import { Transaction } from "../models/transactions";
-import { api } from "../services/api";
-
-type TransactionInput = Omit<Transaction, "id" | "createdAt">;
 
 interface TransactionsProviderProps {
   children: ReactNode;
 }
-
-interface TransactionsContextData {
-  transactions: Transaction[];
-  createTransaction: (transaction: TransactionInput) => Promise<void>;
-}
-
-export const TransactionsContext = createContext<TransactionsContextData>(
-  {} as TransactionsContextData
-);
 
 export function TransactionsProvider({ children }: TransactionsProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -51,4 +42,14 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
       {children}
     </TransactionsContext.Provider>
   );
+}
+
+/**
+ * Custom hook for transactions
+ * @returns
+ */
+export function useTransaction() {
+  const context = useContext(TransactionsContext);
+
+  return context;
 }

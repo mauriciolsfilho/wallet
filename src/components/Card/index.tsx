@@ -1,4 +1,4 @@
-import { currencyMask } from "../../utils/masks";
+import { currencyMask } from "../../core/utils/masks";
 import { CardWrapper, CardHeader, CardBody } from "./styles";
 
 interface CardProps {

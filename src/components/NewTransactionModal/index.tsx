@@ -3,8 +3,8 @@ import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import Modal, { Props } from "react-modal";
 import { FormWrapper, TransactionTypeContainer, RadioTypeBox } from "./styles";
-import { FormEvent, useContext, useState } from "react";
-import { TransactionsContext } from "../../contexts/TransactionsContext";
+import { FormEvent, useState } from "react";
+import { useTransaction } from "../../core/hooks/useTransactions";
 
 interface ModalProps extends Props {
   onRequestClose: () => void;
@@ -19,7 +19,7 @@ export function NewTransactionModal({
   onRequestClose,
   ...props
 }: ModalProps) {
-  const { createTransaction } = useContext(TransactionsContext);
+  const { createTransaction } = useTransaction();
 
   const [type, setType] = useState<"deposit" | "withdraw">("deposit");
   const [title, setTitle] = useState("");
@@ -28,12 +28,13 @@ export function NewTransactionModal({
 
   async function handleCreateNewTransaction(e: FormEvent) {
     e.preventDefault();
+    const amountToSummary: number = type === "deposit" ? amount : -amount;
 
     await createTransaction({
       type,
       title,
-      amount,
       category,
+      amount: amountToSummary,
     });
     cleanCloseForm();
   }

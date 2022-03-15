@@ -4,13 +4,13 @@ import { Container } from "./styles";
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
 import totalImg from "../../assets/total.svg";
-import { useContext, useEffect, useState } from "react";
-import { TransactionsContext } from "../../contexts/TransactionsContext";
+import { useEffect, useState } from "react";
+import { useTransaction } from "../../core/hooks/useTransactions";
 
 interface SummaryValue {
-  total: number;
-  deposit: number;
-  withdraw: number;
+  totals: number;
+  deposits: number;
+  withdraws: number;
 }
 
 /**
@@ -18,27 +18,27 @@ interface SummaryValue {
  * @returns
  */
 export function Summary() {
-  const { transactions } = useContext(TransactionsContext);
+  const { transactions } = useTransaction();
   const [summaryValues, setSummaryValues] = useState<SummaryValue>({
-    deposit: 0,
-    withdraw: 0,
-    total: 0,
+    deposits: 0,
+    withdraws: 0,
+    totals: 0,
   });
 
   useEffect(() => {
     if (transactions.length > 0) {
       setSummaryValues({
-        deposit:
+        deposits:
           transactions
             .filter((transaction) => transaction.type === "deposit")
             .map((t) => t.amount)
             .reduce((prev, curr) => prev + curr) || 0,
-        withdraw:
+        withdraws:
           transactions
             .filter((transaction) => transaction.type === "withdraw")
             .map((t) => t.amount)
             .reduce((prev, curr) => prev + curr) || 0,
-        total:
+        totals:
           transactions
             .map((t) => t.amount)
             .reduce((prev, curr) => prev + curr) || 0,
@@ -47,14 +47,22 @@ export function Summary() {
   }, [transactions]);
   return (
     <Container>
-      <Card image={incomeImg} title="Entradas" amount={summaryValues.deposit} />
-      <Card image={outcomeImg} title="Saídas" amount={summaryValues.withdraw} />
+      <Card
+        image={incomeImg}
+        title="Entradas"
+        amount={summaryValues.deposits}
+      />
+      <Card
+        image={outcomeImg}
+        title="Saídas"
+        amount={summaryValues.withdraws}
+      />
       <Card
         image={totalImg}
         title="Total"
-        amount={summaryValues.total}
+        amount={summaryValues.totals}
         className={
-          summaryValues.total > 0 ? "background-green" : "background-red"
+          summaryValues.totals > 0 ? "background-green" : "background-red"
         }
       />
     </Container>
