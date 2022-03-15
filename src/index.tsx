@@ -12,19 +12,27 @@ createServer({
       transactions: [
         {
           id: 1,
-          title: "Desenvolvimento de Website",
+          title: "Desenvolvimento Website",
           type: "deposit",
-          category: "Dev",
-          amount: 6754,
+          category: "Freelance",
+          amount: 6555,
           createdAt: new Date("2022-02-10"),
         },
         {
           id: 2,
-          title: "Aluguel Joinville",
+          title: "Aluguel",
           type: "withdraw",
           category: "Casa",
-          amount: -10000,
+          amount: -1550,
           createdAt: new Date("2022-03-10"),
+        },
+        {
+          id: 3,
+          title: "Supermercado",
+          type: "withdraw",
+          category: "Compras",
+          amount: -412,
+          createdAt: new Date("2022-03-01"),
         },
       ],
     });
@@ -39,6 +47,15 @@ createServer({
     this.post("/transactions", (schema, request) => {
       const data = JSON.parse(request.requestBody);
       return schema.create("transaction", data);
+    });
+
+    this.delete("/transactions/:id", (schema, request) => {
+      let transaction = schema.find("transaction", request.params.id);
+
+      if (transaction) {
+        transaction.destroy();
+      }
+      return this.schema.all("transaction");
     });
   },
 });
