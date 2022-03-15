@@ -4,6 +4,7 @@ import { Transaction } from "../models/transactions";
 
 interface TransactionsContextData {
   transactions: Transaction[];
+  deleteTransaction: (id: number) => Promise<void>;
   createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
 
