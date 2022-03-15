@@ -1,5 +1,7 @@
-import { Transaction } from "../../core/models/transactions";
+/* eslint-disable no-restricted-globals */
 import { Container } from "./styles";
+import trashImg from "../../assets/trash.png";
+import { Transaction } from "../../core/models/transactions";
 import { currencyMask, localeDateFormat } from "../../core/utils/masks";
 import { useTransaction } from "../../core/hooks/useTransactions";
 
@@ -8,7 +10,12 @@ import { useTransaction } from "../../core/hooks/useTransactions";
  * @returns
  */
 export function TransactionsTable() {
-  const { transactions } = useTransaction();
+  const { transactions, deleteTransaction } = useTransaction();
+
+  async function handleDelete(transaction: Transaction) {
+    if (confirm("Deseja realmente Remover?"))
+      await deleteTransaction(transaction.id);
+  }
 
   return (
     <Container>
@@ -19,6 +26,7 @@ export function TransactionsTable() {
             <th>Preço</th>
             <th>Categoria</th>
             <th>Data</th>
+            <th style={{ textAlign: "center" }}>Ações</th>
           </tr>
         </thead>
         <tbody>
@@ -30,6 +38,12 @@ export function TransactionsTable() {
               </td>
               <td>{transaction.category}</td>
               <td>{localeDateFormat(transaction.createdAt)}</td>
+              <td
+                style={{ cursor: "pointer", textAlign: "center" }}
+                onClick={() => handleDelete(transaction)}
+              >
+                <img alt="remover" src={trashImg} width={25} height={25} />
+              </td>
             </tr>
           ))}
         </tbody>

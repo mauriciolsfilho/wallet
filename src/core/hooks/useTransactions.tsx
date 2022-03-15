@@ -32,10 +32,18 @@ export function TransactionsProvider({ children }: TransactionsProviderProps) {
     }
   }
 
+  async function deleteTransaction(id: number) {
+    const response = await api.delete(`/transactions/${id}`);
+    if (response.status <= 201) {
+      setTransactions(response.data.transactions);
+    }
+  }
+
   return (
     <TransactionsContext.Provider
       value={{
         transactions,
+        deleteTransaction,
         createTransaction,
       }}
     >
